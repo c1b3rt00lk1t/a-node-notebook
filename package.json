@@ -1,0 +1,19 @@
+{
+  "name": "a-node-notebook",
+  "version": "1.0.0",
+  "description": "a node notebook",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c1b3rt00lk1t/a-node-notebook.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/c1b3rt00lk1t/a-node-notebook/issues"
+  },
+  "homepage": "https://github.com/c1b3rt00lk1t/a-node-notebook#readme"
+}
