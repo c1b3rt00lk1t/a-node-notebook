@@ -19,5 +19,8 @@
   "homepage": "https://github.com/c1b3rt00lk1t/a-node-notebook#readme",
   "dependencies": {
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }
