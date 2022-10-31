@@ -1,8 +1,7 @@
-
 const express = require("express");
 const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
 let notes = [
   {
@@ -45,18 +44,16 @@ app.delete("/api/notes/:id", (request, response) => {
   response.status(204).end();
 });
 
-app.post('/api/notes', (request, response) => {
-  const maxId = notes.length > 0
-    ? Math.max(...notes.map(n => n.id)) 
-    : 0
+app.post("/api/notes", (request, response) => {
+  const maxId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) : 0;
 
-  const note = request.body
-  note.id = maxId + 1
+  const note = request.body;
+  note.id = maxId + 1;
 
-  notes = notes.concat(note)
+  notes = notes.concat(note);
 
-  response.json(note)
-})
+  response.json(note);
+});
 
 const PORT = 3001;
 app.listen(PORT);
