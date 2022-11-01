@@ -1,7 +1,16 @@
 const express = require("express");
 const app = express();
 
+const requestLogger = (request, response, next) => {
+  console.log("Method:", request.method);
+  console.log("Path:  ", request.path);
+  console.log("Body:  ", request.body);
+  console.log("---");
+  next();
+};
+
 app.use(express.json());
+app.use(requestLogger);
 
 let notes = [
   {
@@ -47,12 +56,12 @@ app.delete("/api/notes/:id", (request, response) => {
 const generateId = () => {
   const maxId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) : 0;
   return maxId + 1;
-}
+};
 
 app.post("/api/notes", (request, response) => {
   const body = request.body;
-  if(!body.content){
-    return response.status(400).json({error: 'content missing'})
+  if (!body.content) {
+    return response.status(400).json({ error: "content missing" });
   }
 
   const note = {
@@ -60,7 +69,7 @@ app.post("/api/notes", (request, response) => {
     important: body.important || false,
     date: new Date(),
     id: generateId(),
-  }
+  };
   notes = notes.concat(note);
   response.json(note);
 });
