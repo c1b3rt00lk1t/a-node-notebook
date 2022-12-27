@@ -33,9 +33,7 @@ app.get("/api/notes", (request, response) => {
 });
 
 app.get("/api/notes/:id", (request, response) => {
-  const id = Number(request.params.id);
-  const note = notes.find((note) => note.id === id);
-  note ? response.json(note) : response.status(404).end("404 not found");
+  Note.findById(request.params.id).then(note => {response.json(note)});
 });
 
 app.delete("/api/notes/:id", (request, response) => {
@@ -58,10 +56,19 @@ app.post("/api/notes", (request, response) => {
     date: new Date()
   });
 
-
   note.save().then(savedNote => {
     response.json(savedNote)
   })
+});
+
+app.put("/api/notes/:id", (request, response) => {
+  const body = request.body;
+  if (!body.content) {
+    return response.status(400).json({ error: "content missing" });
+  }
+
+  Note.updateOne({_id: body.id}, {$set: {important : body.important}}).then(res => response.json(body));
+
 });
 
 const unknownEndpoint = (request, response) => {
