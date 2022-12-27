@@ -1,26 +1,6 @@
 const express = require("express");
 const app = express();
-const { pass } = require("./pass.js");
-
-const mongoose = require("mongoose");
-const url = `mongodb+srv://fullstack:${pass}@cluster0.pf1gfrd.mongodb.net/noteBook?retryWrites=true&w=majority`;
-mongoose.connect(url);
-
-const noteSchema = new mongoose.Schema({
-  content: String,
-  date: Date,
-  important: Boolean,
-});
-
-noteSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
-  }
-})
-
-const Note = mongoose.model("Note", noteSchema);
+const Note = require('./models/note')
 
 const requestLogger = (request, response, next) => {
   console.log("Method:", request.method);
