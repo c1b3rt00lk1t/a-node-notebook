@@ -1,5 +1,19 @@
 const express = require("express");
 const app = express();
+const {pass} = require('./pass.js');
+
+const mongoose = require('mongoose')
+const url = `mongodb+srv://fullstack:${pass}@cluster0.pf1gfrd.mongodb.net/test?retryWrites=true&w=majority`
+mongoose.connect(url)
+
+const noteSchema = new mongoose.Schema({
+  content: String,
+  date: Date,
+  important: Boolean,
+})
+
+const Note = mongoose.model('Note', noteSchema)
+
 
 const requestLogger = (request, response, next) => {
   console.log("Method:", request.method);
@@ -44,7 +58,9 @@ app.get("/", (request, response) => {
 });
 
 app.get("/api/notes", (request, response) => {
-  response.json(notes);
+  Note.find({}).then(notes => {
+    response.json(notes)
+  })
 });
 
 app.get("/api/notes/:id", (request, response) => {
