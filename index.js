@@ -1,19 +1,18 @@
 const express = require("express");
 const app = express();
-const {pass} = require('./pass.js');
+const { pass } = require("./pass.js");
 
-const mongoose = require('mongoose')
-const url = `mongodb+srv://fullstack:${pass}@cluster0.pf1gfrd.mongodb.net/test?retryWrites=true&w=majority`
-mongoose.connect(url)
+const mongoose = require("mongoose");
+const url = `mongodb+srv://fullstack:${pass}@cluster0.pf1gfrd.mongodb.net/test?retryWrites=true&w=majority`;
+mongoose.connect(url);
 
 const noteSchema = new mongoose.Schema({
   content: String,
   date: Date,
   important: Boolean,
-})
+});
 
-const Note = mongoose.model('Note', noteSchema)
-
+const Note = mongoose.model("Note", noteSchema);
 
 const requestLogger = (request, response, next) => {
   console.log("Method:", request.method);
@@ -23,14 +22,14 @@ const requestLogger = (request, response, next) => {
   next();
 };
 
-const cors = require('cors')
+const cors = require("cors");
 
-app.use(cors())
+app.use(cors());
 
 app.use(express.json());
 app.use(requestLogger);
 
-app.use(express.static('build'));
+app.use(express.static("build"));
 
 let notes = [
   {
@@ -58,9 +57,9 @@ app.get("/", (request, response) => {
 });
 
 app.get("/api/notes", (request, response) => {
-  Note.find({}).then(notes => {
-    response.json(notes)
-  })
+  Note.find({}).then((notes) => {
+    response.json(notes);
+  });
 });
 
 app.get("/api/notes/:id", (request, response) => {
@@ -97,12 +96,12 @@ app.post("/api/notes", (request, response) => {
 });
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
+  response.status(404).send({ error: "unknown endpoint" });
+};
 
-app.use(unknownEndpoint)
+app.use(unknownEndpoint);
 
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+  console.log(`Server running on port ${PORT}`);
+});
