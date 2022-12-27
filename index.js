@@ -38,7 +38,6 @@ app.get("/api/notes/:id", (request, response) => {
 
 app.delete("/api/notes/:id", (request, response) => {
   Note.deleteOne({ _id: request.params.id })
-    .then((res) => console.log(res))
     .then((res) => response.json(request.params.id));
 });
 
