@@ -1,7 +1,7 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const app = express();
-const Note = require('./models/note')
+const Note = require("./models/note");
 
 const requestLogger = (request, response, next) => {
   console.log("Method:", request.method);
@@ -20,8 +20,6 @@ app.use(requestLogger);
 
 app.use(express.static("build"));
 
-
-
 app.get("/", (request, response) => {
   response.send("<h1>Hello World!<h1>");
 });
@@ -33,15 +31,16 @@ app.get("/api/notes", (request, response) => {
 });
 
 app.get("/api/notes/:id", (request, response) => {
-  Note.findById(request.params.id).then(note => {response.json(note)});
+  Note.findById(request.params.id).then((note) => {
+    response.json(note);
+  });
 });
 
 app.delete("/api/notes/:id", (request, response) => {
-  const id = Number(request.params.id);
-  notes = notes.filter((note) => note.id !== id);
-  response.status(204).end();
+  Note.deleteOne({ _id: request.params.id })
+    .then((res) => console.log(res))
+    .then((res) => response.json(request.params.id));
 });
-
 
 app.post("/api/notes", (request, response) => {
   const body = request.body;
@@ -53,12 +52,12 @@ app.post("/api/notes", (request, response) => {
   const note = new Note({
     content: body.content,
     important: body.important || false,
-    date: new Date()
+    date: new Date(),
   });
 
-  note.save().then(savedNote => {
-    response.json(savedNote)
-  })
+  note.save().then((savedNote) => {
+    response.json(savedNote);
+  });
 });
 
 app.put("/api/notes/:id", (request, response) => {
@@ -67,8 +66,10 @@ app.put("/api/notes/:id", (request, response) => {
     return response.status(400).json({ error: "content missing" });
   }
 
-  Note.updateOne({_id: body.id}, {$set: {important : body.important}}).then(res => response.json(body));
-
+  Note.updateOne(
+    { _id: body.id },
+    { $set: { important: body.important } }
+  ).then((res) => response.json(body));
 });
 
 const unknownEndpoint = (request, response) => {
