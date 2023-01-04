@@ -1,12 +1,17 @@
-const mongoose = require("mongoose");
-const url = process.env.MONGODB_URI;
-mongoose.connect(url);
+const mongoose = require('mongoose')
 
 const noteSchema = new mongoose.Schema({
-  content: String,
-  date: Date,
+  content: {
+    type: String,
+    required: true,
+    minlength: 5
+  },
+  date: {
+    type: Date,
+    required: true,
+  },
   important: Boolean,
-});
+})
 
 noteSchema.set('toJSON', {
   transform: (document, returnedObject) => {
@@ -16,4 +21,4 @@ noteSchema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model("Note", noteSchema);
+module.exports = mongoose.model('Note', noteSchema)
